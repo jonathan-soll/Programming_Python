@@ -14,7 +14,7 @@ def counter(count):                             # run in new process
         print('[%s] => %s' % (os.getpid(), i))
 
 for i in range(5):
-    pid = os.spawnv()
+    pid = os.fork()
     if pid != 0:
         print('Process %d spawned' % pid)       # in parent: continue
     else:

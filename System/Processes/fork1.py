@@ -9,9 +9,9 @@ def child():
 def parent():
     while True:
         newpid = os.fork()
-        if newpid == 0:
+        if newpid == 0:             # if we're in the forked process, run the child() function
             child()
-        else:
+        else:                       # else if we're in the parent process, do this
             print('Hello from parent', os.getpid(), newpid)
         if input() == 'q': break
 
