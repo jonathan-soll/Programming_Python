@@ -51,13 +51,9 @@ def splitpath(origpath):                                 # get file at end
     return origpath                                     # failed or no dirs
 
 def saveonserver(fileinfo):                             # use file input form data
-    print('<BR>IN SAVEONSERVER FUNCTION <BR>')
-    basename = splitpath(fileinfo.value)             # name without dir path
-    print('basename', basename, '<br>')
+    basename = splitpath(fileinfo.filename)             # name without dir path
     srvrname = os.path.join(uploaddir, basename)        # store in a dir if set
-    print('srvrname', srvrname, '<br>')
     srvrfile = open(srvrname, 'wb')                     # always write bytes here
-    print('srvrfile', srvrfile, '<br>')
 
     if loadtextauto:
         filetext = fileinfo.value                       # reads text into string
@@ -65,11 +61,9 @@ def saveonserver(fileinfo):                             # use file input form da
             filedata = filetedt.encode()
         srvrfile.write(filedata)                        # save in server file
     else:                                               # else read line by line
-        print('<br>ELSE<br>')
         numlines, filetext = 0, ''                      # e.g., for huge files
         while True:                                     # content always str here
             line = fileinfo.file.readline()             # or for loop and iterator
-            print('LINE=', line, '<br>')
             if not line: break
             if isinstance(line, str):                   # Python 3.1 hack
                 line = line.encode()
@@ -83,18 +77,11 @@ def saveonserver(fileinfo):                             # use file input form da
 
 def main():
 
-    print("form['clientfile']<br>", form, '<br>'
-                                    , form['clientfile'], '<br>'
-                                    , form['clientfile'].value, '<br>'
-                                    , form['clientfile'].file, '<br>'
-                                    , form['clientfile'].filename, '<br><br><br>')
-
     if not 'clientfile' in form:
         print(html % 'Error: no file was received')
-    elif not form['clientfile'].value:
+    elif not form['clientfile'].filename:
         print(html % 'Error: filename is missing')
     else:
-        print('MADE IT HERE')
         fileinfo = form['clientfile']
         try:
             filetext, srvrname = saveonserver(fileinfo)
